@@ -3,6 +3,9 @@ package apps.baveltman.criminalintent;
 
 import java.util.UUID;
 
+/**
+ * Model for a crime
+ */
 public class Crime {
 
     private UUID mId;
