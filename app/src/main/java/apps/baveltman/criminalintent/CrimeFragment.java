@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 
 /**
  * Controller for fragment_crime
@@ -20,6 +22,8 @@ import android.widget.EditText;
  * allows to edit details of a current crime
  */
 public class CrimeFragment extends Fragment {
+
+    public static String EXTRA_CRIME_ID = "baveltman.apps.criminalintent.EXTRA_CRIME_ID";
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -29,7 +33,15 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+
+        UUID crimeId = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
+
+        if (crimeId != null){
+            mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        } else {
+            mCrime = new Crime();
+        }
+
     }
 
     @Override
@@ -42,10 +54,24 @@ public class CrimeFragment extends Fragment {
 
     }
 
+    /**
+     * this method is used to pass a crimeId to this fragement as an argument
+     * so that the fragment can be initialized by any activity
+     */
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_CRIME_ID, crimeId);
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private void bindFragmentUiElements(View v) {
         mTitleField = (EditText)v.findViewById(R.id.crime_title);
+        mTitleField.setText(mCrime.getTitle());
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
 
         mDateButton = (Button)v.findViewById(R.id.crime_date);
         mDateButton.setText(mCrime.getDate().toString());

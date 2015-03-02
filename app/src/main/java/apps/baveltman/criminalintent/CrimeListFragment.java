@@ -1,5 +1,6 @@
 package apps.baveltman.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  */
 public class CrimeListFragment extends ListFragment {
 
-    private static final String TAG = "CrimeListFragment";
+
 
     private ArrayList<Crime> mCrimes;
 
@@ -36,7 +37,11 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         Crime c = ((CrimeAdapter)getListAdapter()).getItem(position);
-        Log.d(TAG, c.getTitle() + " was clicked");
+
+        // Start CrimeActivity
+        Intent i = new Intent(getActivity(), CriminalActivity.class);
+        i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
+        startActivity(i);
     }
 
     /**
