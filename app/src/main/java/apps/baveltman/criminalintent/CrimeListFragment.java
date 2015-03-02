@@ -2,6 +2,7 @@ package apps.baveltman.criminalintent;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
@@ -17,5 +18,13 @@ public class CrimeListFragment extends ListFragment {
         super.onCreate(savedInstanceStateBundle);
         getActivity().setTitle(R.string.crimes_title);
         mCrimes = CrimeLab.get(getActivity()).getCrimes();
+
+        //set the adapter for the list
+        ArrayAdapter<Crime> adapter =
+                new ArrayAdapter<Crime>(getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        mCrimes);
+
+        setListAdapter(adapter);
     }
 }
