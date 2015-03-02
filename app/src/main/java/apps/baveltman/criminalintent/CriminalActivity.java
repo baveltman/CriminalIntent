@@ -15,7 +15,8 @@ public class CriminalActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime);
 
-        FragmentManager fm = getSupportFragmentManager();
+        //initialize and inflate activity_crime UI
+        FragmentManager fm = getSupportFragmentManager(); //using the support library for backwards compatibility pre API 11
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
         if (fragment == null) {
             fragment = new CrimeFragment();

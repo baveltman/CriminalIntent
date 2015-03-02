@@ -37,7 +37,7 @@ public class CrimeFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_crime, parent, false);
         bindFragmentUiElements(v);
-        bindListenersAndEvents(v);
+        bindListenersAndEvents();
         return v;
 
     }
@@ -52,7 +52,7 @@ public class CrimeFragment extends Fragment {
         mDateButton.setEnabled(false);
     }
 
-    private void bindListenersAndEvents(View v) {
+    private void bindListenersAndEvents() {
 
         mTitleField.addTextChangedListener(new TextWatcher() {
 
