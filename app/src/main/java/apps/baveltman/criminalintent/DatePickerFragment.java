@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,6 +22,8 @@ import java.util.GregorianCalendar;
 public class DatePickerFragment extends DialogFragment {
 
     private Date mDate;
+    private DatePicker mDatePicker;
+    private TimePicker mTimePicker;
 
     public static final String EXTRA_DATE =
             "baveltman.apps.date";
@@ -49,18 +53,40 @@ public class DatePickerFragment extends DialogFragment {
      * looks at passed fragment arguments to set the date on the dialog
      */
     private void setCalendarDateFromArguments(View v) {
-        // Create a Calendar to get the year, month, and day
+        // Create a Calendar to get the year, month, and day for DatePicker
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(mDate);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+        // Also get values for TimePicker
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        int sec = calendar.get(Calendar.SECOND);
+        int milliSec = calendar.get(Calendar.MILLISECOND);
 
-        DatePicker datePicker = (DatePicker)v.findViewById(R.id.dialog_date_datePicker);
-        datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
+        //Initialize DatePicker
+        mDatePicker = (DatePicker)v.findViewById(R.id.dialog_date_datePicker);
+        //Initialize TImePicker
+        mTimePicker = (TimePicker)v.findViewById(R.id.dialog_date_timePicker);
+        mTimePicker.setCurrentHour(hour);
+        mTimePicker.setCurrentMinute(min);
+
+
+        //bind event listeners for dialog date and time pickers
+        mDatePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int month, int day) {
-                mDate = new GregorianCalendar(year, month, day).getTime();
+                mDate = new GregorianCalendar(year, month, day, mTimePicker.getCurrentHour(), mTimePicker.getCurrentMinute()).getTime();
+                getArguments().putSerializable(EXTRA_DATE, mDate);
+            }
+        });
+
+
+        mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                mDate = new GregorianCalendar(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth(), hourOfDay, minute).getTime();
                 getArguments().putSerializable(EXTRA_DATE, mDate);
             }
         });

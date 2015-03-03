@@ -40,16 +40,22 @@ public class CrimeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //look to see if arguments were passed in a bundle and act accordingly
         UUID crimeId = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
 
         if (crimeId != null){
+            //passed a specific crime so let's get the crime in question
             mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
         } else {
+            //no crime Id passed, so let's
             mCrime = new Crime();
         }
 
     }
 
+    /**
+     * Since we're dealing with a fragment, we're actually using the onCreateView method to inflate the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
 
@@ -60,6 +66,12 @@ public class CrimeFragment extends Fragment {
 
     }
 
+    /**
+     * Interperts child fragment result and acts according to intent
+     * @param requestCode unique identifier to ascertain which child fragment has returned
+     * @param resultCode status returned by child fragement
+     * @param i intent with extras returned by child fragment
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent i){
         if (resultCode != Activity.RESULT_OK) {return;}
@@ -114,11 +126,11 @@ public class CrimeFragment extends Fragment {
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
-                // This space intentionally left blank
+                // nothing yet
             }
 
             public void afterTextChanged(Editable c) {
-                // This one too
+                // nothing yet
             }
         });
 
