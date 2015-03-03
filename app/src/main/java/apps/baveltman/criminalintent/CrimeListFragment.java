@@ -38,11 +38,14 @@ public class CrimeListFragment extends ListFragment {
         Crime c = ((CrimeAdapter)getListAdapter()).getItem(position);
 
         // Start CrimeActivity
-        Intent i = new Intent(getActivity(), CriminalActivity.class);
+        Intent i = new Intent(getActivity(), CrimePagerActivity.class);
         i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
         startActivity(i);
     }
 
+    /**
+     * update list data when activity and fragment are resumed
+     */
     @Override
     public void onResume() {
         super.onResume();
