@@ -31,15 +31,32 @@ public class CrimePagerActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         bindViewPagerAdapter(fm);
-        DisplayCorrectItemInViewPager();
-
+        displayCorrectItemInViewPager();
+        bindEventListeners();
         setContentView(mViewPager);
+    }
+
+    private void bindEventListeners() {
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            public void onPageScrollStateChanged(int state) { }
+
+            public void onPageScrolled(int pos, float posOffset, int posOffsetPixels) { }
+
+            public void onPageSelected(int pos) {
+                Crime crime = mCrimes.get(pos);
+                if (crime.getTitle() != null) {
+                    setTitle(crime.getTitle());
+                }
+            }
+
+        });
     }
 
     /**
      * looks at intent and updates ViewPager to display designated item
      */
-    private void DisplayCorrectItemInViewPager() {
+    private void displayCorrectItemInViewPager() {
         UUID crimeId = (UUID)getIntent()
                 .getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
 
