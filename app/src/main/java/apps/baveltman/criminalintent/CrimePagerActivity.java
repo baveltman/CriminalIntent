@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * A ViewPager activity for individual crimes in the ListFragment
@@ -29,7 +30,32 @@ public class CrimePagerActivity extends FragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        //an adapter is required for a ViewPager to work
+        bindViewPagerAdapter(fm);
+        DisplayCorrectItemInViewPager();
+
+        setContentView(mViewPager);
+    }
+
+    /**
+     * looks at intent and updates ViewPager to display designated item
+     */
+    private void DisplayCorrectItemInViewPager() {
+        UUID crimeId = (UUID)getIntent()
+                .getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
+
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * sets up the adapter required for the ViewPager to work
+     * @param fm
+     */
+    private void bindViewPagerAdapter(FragmentManager fm) {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
             @Override
             public int getCount() {
@@ -42,7 +68,5 @@ public class CrimePagerActivity extends FragmentActivity {
                 return CrimeFragment.newInstance(crime.getId());
             }
         });
-
-        setContentView(mViewPager);
     }
 }
