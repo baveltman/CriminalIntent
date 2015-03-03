@@ -26,6 +26,7 @@ public class CrimeFragment extends Fragment {
 
     public static String EXTRA_CRIME_ID = "baveltman.apps.criminalintent.EXTRA_CRIME_ID";
     private static final String DIALOG_DATE = "date";
+    private static final int REQUEST_DATE = 0;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -86,7 +87,9 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v){
                 FragmentManager fm = getActivity()
                         .getSupportFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
+                DatePickerFragment dialog = DatePickerFragment
+                        .newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
             }
         });
