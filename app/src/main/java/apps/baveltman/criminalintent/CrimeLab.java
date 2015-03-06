@@ -18,17 +18,8 @@ public class CrimeLab {
     private CrimeLab(Context appContext){
         mAppContext = appContext;
         mCrimes = new ArrayList<Crime>();
-        createRandomCrimes();
     }
 
-    private void createRandomCrimes() {
-        for (int i = 0; i < 100; ++i) {
-            Crime c = new Crime();
-            c.setTitle("Crime #" + i);
-            c.setSolved(i % 2 == 0); // Every other one
-            mCrimes.add(c);
-        }
-    }
 
     public static CrimeLab get(Context c) {
         if (sCrimeLab == null) {
@@ -53,6 +44,17 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    /**
+     * adds a new crime to the modle
+     * @param c
+     */
+    public void addCrime(Crime c){
+        if (mCrimes == null){
+            mCrimes = new ArrayList<Crime>();
+        }
+        mCrimes.add(c);
     }
 
 }
