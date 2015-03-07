@@ -1,6 +1,7 @@
 package apps.baveltman.criminalintent;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -14,10 +15,26 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private Context mAppContext;
     private ArrayList<Crime> mCrimes;
+    private CriminalIntentJsonSerializer mJsonSerializer;
+
+    private static final String TAG = "CrimeLab";
+    private static final String FILENAME = "crimes.json";
 
     private CrimeLab(Context appContext){
         mAppContext = appContext;
         mCrimes = new ArrayList<Crime>();
+        mJsonSerializer = new CriminalIntentJsonSerializer(mAppContext, FILENAME);
+    }
+
+    public boolean saveCrimes(){
+        try{
+            mJsonSerializer.saveCrimes(mCrimes);
+            Log.d(TAG, "updated crimes saved to file");
+            return true;
+        } catch (Exception e){
+            Log.d(e.toString(), e.getMessage());
+            return false;
+        }
     }
 
 

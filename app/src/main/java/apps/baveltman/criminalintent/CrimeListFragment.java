@@ -30,6 +30,7 @@ public class CrimeListFragment extends ListFragment {
     private ArrayList<Crime> mCrimes;
     private Button mNewCrimeButton;
 
+
     @Override
     public void onCreate(Bundle savedInstanceStateBundle){
         super.onCreate(savedInstanceStateBundle);
@@ -146,6 +147,7 @@ public class CrimeListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+
     }
 
     /**

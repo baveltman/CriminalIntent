@@ -92,6 +92,15 @@ public class CrimeFragment extends Fragment {
     }
 
     /**
+     * Save crimes to JSON file on application pause
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).saveCrimes();
+    }
+
+    /**
      * Interperts child fragment result and acts according to intent
      * @param requestCode unique identifier to ascertain which child fragment has returned
      * @param resultCode status returned by child fragement
