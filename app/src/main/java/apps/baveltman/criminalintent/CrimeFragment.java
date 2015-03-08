@@ -11,6 +11,8 @@ import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,20 +56,42 @@ public class CrimeFragment extends Fragment {
             mCrime = new Crime();
         }
 
+        //activity will have an ActionBar
         setHasOptionsMenu(true);
 
+        //retain instance vars on configuration change
+        setRetainInstance(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
        switch (item.getItemId()) {
+
             case android.R.id.home:
-                    if (NavUtils.getParentActivityName(getActivity()) != null) {
-                        NavUtils.navigateUpFromSameTask(getActivity());
-                    }
+                returnToPreviousActivity();
                 return true;
+
+           case R.id.menu_item_delete_crime:
+               //delete action
+               CrimeLab.get(getActivity()).deleteCrime(mCrime);
+               returnToPreviousActivity();
+               return true;
+
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void returnToPreviousActivity() {
+        if (NavUtils.getParentActivityName(getActivity()) != null) {
+            NavUtils.navigateUpFromSameTask(getActivity());
         }
     }
 

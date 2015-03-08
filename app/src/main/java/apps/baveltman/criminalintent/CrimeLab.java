@@ -92,6 +92,7 @@ public class CrimeLab {
         if (mCrimes != null){
             mCrimes.remove(c);
         }
+        saveCrimes();
     }
 
 }
