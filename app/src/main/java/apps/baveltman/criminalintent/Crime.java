@@ -29,6 +29,18 @@ public class Crime {
         mDate = new Date();
     }
 
+    /**
+     * deserializes a JSON object to a Crime object
+     * @param json
+     * @throws JSONException
+     */
+    public Crime(JSONObject json) throws JSONException {
+        mId = UUID.fromString(json.getString(JSON_ID));
+        mTitle = json.getString(JSON_TITLE);
+        mSolved = json.getBoolean(JSON_SOLVED);
+        mDate = new Date(json.getLong(JSON_DATE));
+    }
+
     public UUID getId(){
         return mId;
     }

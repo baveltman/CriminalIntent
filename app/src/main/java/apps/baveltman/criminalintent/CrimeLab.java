@@ -22,8 +22,18 @@ public class CrimeLab {
 
     private CrimeLab(Context appContext){
         mAppContext = appContext;
-        mCrimes = new ArrayList<Crime>();
         mJsonSerializer = new CriminalIntentJsonSerializer(mAppContext, FILENAME);
+        mCrimes = tryLoadCrimesFromFile();
+    }
+
+    private ArrayList<Crime> tryLoadCrimesFromFile() {
+        try{
+            ArrayList<Crime> crimes = mJsonSerializer.loadCrimes();
+            return crimes;
+        } catch (Exception e){
+            Log.d(TAG, "bad shit happened and we couldn't load the crime list from the JSON file")
+            return new ArrayList<Crime>();
+        }
     }
 
     public boolean saveCrimes(){
