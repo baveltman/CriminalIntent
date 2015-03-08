@@ -31,7 +31,7 @@ public class CrimeLab {
             ArrayList<Crime> crimes = mJsonSerializer.loadCrimes();
             return crimes;
         } catch (Exception e){
-            Log.d(TAG, "bad shit happened and we couldn't load the crime list from the JSON file")
+            Log.d(TAG, "bad shit happened and we couldn't load the crime list from the JSON file");
             return new ArrayList<Crime>();
         }
     }

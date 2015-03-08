@@ -83,7 +83,7 @@ public class Crime {
         jsonCrime.put(JSON_ID, getId().toString());
         jsonCrime.put(JSON_TITLE, getTitle());
         jsonCrime.put(JSON_SOLVED, isSolved());
-        jsonCrime.put(JSON_DATE, getDate());
+        jsonCrime.put(JSON_DATE, getDate().getTime());
         return jsonCrime;
     }
 }
