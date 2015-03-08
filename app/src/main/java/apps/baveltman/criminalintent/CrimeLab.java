@@ -74,7 +74,7 @@ public class CrimeLab {
     }
 
     /**
-     * adds a new crime to the modle
+     * adds a new crime to the model
      * @param c
      */
     public void addCrime(Crime c){
@@ -82,6 +82,16 @@ public class CrimeLab {
             mCrimes = new ArrayList<Crime>();
         }
         mCrimes.add(c);
+    }
+
+    /**
+     * deletes a crime from the model
+     * @param c
+     */
+    public void deleteCrime(Crime c){
+        if (mCrimes != null){
+            mCrimes.remove(c);
+        }
     }
 
 }
