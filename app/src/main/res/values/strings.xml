@@ -15,4 +15,6 @@
     <string name="delete_crime">Delete</string>
     <string name="no_crimes">There are no crimes reported</string>
     <string name="take">Take</string>
+    <string name="crime_suspect_text">Choose Suspect</string>
+    <string name="crime_report_text">Send Crime Report</string>
 </resources>

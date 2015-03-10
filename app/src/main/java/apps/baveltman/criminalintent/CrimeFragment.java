@@ -40,6 +40,7 @@ public class CrimeFragment extends Fragment {
     public static String EXTRA_CRIME_ID = "baveltman.apps.criminalintent.EXTRA_CRIME_ID";
     private static final String DIALOG_DATE = "date";
     private static final String TAG = "CrimeFragment";
+    private static final String DIALOG_IMAGE = "image";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_PHOTO = 1;
@@ -233,6 +234,22 @@ public class CrimeFragment extends Fragment {
                         .newInstance(mCrime.getDate());
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
+            }
+        });
+
+        mPhotoImageView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Photo p = mCrime.getPhoto();
+
+                if (p == null)
+                    return;
+
+                FragmentManager fm = getActivity()
+                        .getSupportFragmentManager();
+                String path = getActivity()
+                        .getFileStreamPath(p.getFilename()).getAbsolutePath();
+                ImageFragment.newInstance(path)
+                        .show(fm, DIALOG_IMAGE);
             }
         });
 
