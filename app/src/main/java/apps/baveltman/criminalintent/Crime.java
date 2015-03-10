@@ -18,6 +18,7 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
     private Photo mPhoto;
+    private String mSuspect;
 
     //JSON attributes for JSON serialized Crime object
     private static final String JSON_ID = "id";
@@ -25,6 +26,7 @@ public class Crime {
     private static final String JSON_SOLVED = "solved";
     private static final String JSON_DATE = "date";
     private static final String JSON_PHOTO = "photo";
+    private static final String JSON_SUSPECT = "suspect";
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -41,8 +43,13 @@ public class Crime {
         mTitle = json.getString(JSON_TITLE);
         mSolved = json.getBoolean(JSON_SOLVED);
         mDate = new Date(json.getLong(JSON_DATE));
+
         if (json.has(JSON_PHOTO)) {
             mPhoto = new Photo(json.getJSONObject(JSON_PHOTO));
+        }
+
+        if (json.has(JSON_SUSPECT)){
+            mSuspect = json.getString(JSON_SUSPECT);
         }
     }
 
@@ -82,6 +89,13 @@ public class Crime {
         mPhoto = p;
     }
 
+    public String getSuspect() {
+        return mSuspect;
+    }
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
+
     @Override
     public String toString(){
         return mTitle;
@@ -101,6 +115,8 @@ public class Crime {
         if (mPhoto != null) {
             jsonCrime.put(JSON_PHOTO, mPhoto.toJSON());
         }
+
+        jsonCrime.put(JSON_SUSPECT, mSuspect);
 
         return jsonCrime;
     }
