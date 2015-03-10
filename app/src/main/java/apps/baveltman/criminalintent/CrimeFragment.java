@@ -177,7 +177,6 @@ public class CrimeFragment extends Fragment {
     private void bindListenersAndEvents() {
 
         mCameraButton.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), CrimeCameraActivity.class);
