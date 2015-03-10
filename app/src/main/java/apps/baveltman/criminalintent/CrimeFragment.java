@@ -2,6 +2,7 @@ package apps.baveltman.criminalintent;
 
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -58,6 +59,7 @@ public class CrimeFragment extends Fragment {
     private ImageView mPhotoImageView;
     private Button mSendReportButton;
     private Button mSuspectButton;
+    private Button mCallSuspectButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -193,26 +195,50 @@ public class CrimeFragment extends Fragment {
             Uri contactUri = i.getData();
 
             // Specify which fields you want your query to return values for
-            String[] queryFields = new String[] {
-                ContactsContract.Contacts.DISPLAY_NAME
-            };
+            //specify the query field to return
+            String[] queryField={ContactsContract.Contacts.DISPLAY_NAME,
+                    ContactsContract.Contacts._ID};
 
-            // Perform your query - the contactUri is like a "where" clause here
-            Cursor c = getActivity().getContentResolver()
-                .query(contactUri, queryFields, null, null, null);
+            Cursor cursor = getActivity().getContentResolver().query(contactUri, queryField, null, null, null);
 
-            // Double-check that you actually got results
-            if (c.getCount() == 0) {
-                c.close();
+            String suspectName=null;
+            String suspectPhoneNumber=null;
+            int contactId;
+
+            if(cursor.getCount()>0){
+                cursor.moveToFirst();
+                suspectName=cursor.getString(0);
+            }else{
+                if(cursor !=null)
+                    cursor.close();
                 return;
             }
 
-            // Pull out the first column of the first row of data - that is your suspect's name.
-            c.moveToFirst();
-            String suspect = c.getString(0);
-            mCrime.setSuspect(suspect);
-            mSuspectButton.setText(suspect);
-            c.close();
+            //the second number is the id
+            contactId=cursor.getInt(1);
+
+            Cursor cursor2 = getActivity().getContentResolver().query(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    new String[]{String.valueOf(contactId)}, null);
+
+            if (cursor2.moveToNext())
+            {
+                mCrime.setPhoneNumber(cursor2.getString(0));
+            }
+
+            if(cursor2 !=null)
+                cursor2.close();
+
+            mCrime.setSuspect(suspectName);
+            mSuspectButton.setText(suspectName);
+            mCallSuspectButton.setText(getString(R.string.crime_call_name, suspectName));
+
+            if(cursor !=null)
+                cursor.close();
+
+            return;
         }
     }
 
@@ -253,6 +279,11 @@ public class CrimeFragment extends Fragment {
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
         }
+
+        mCallSuspectButton = (Button)v.findViewById(R.id.crime_call_suspect);
+        if (mCrime.getSuspect() != null) {
+            mCallSuspectButton.setText(getString(R.string.crime_call_name, mCrime.getSuspect()));
+        }
     }
 
     private void bindListenersAndEvents() {
@@ -274,6 +305,15 @@ public class CrimeFragment extends Fragment {
                         .newInstance(mCrime.getDate());
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(fm, DIALOG_DATE);
+            }
+        });
+
+        mCallSuspectButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Uri number = Uri.parse("tel:" + mCrime.getPhoneNumber());
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                startActivity(callIntent);
             }
         });
 
