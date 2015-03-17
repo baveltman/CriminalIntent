@@ -32,6 +32,6 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
      * @return the id of the layout to be inflated
      */
     protected int getLayoutResId() {
-        return R.layout.activity_twopane;
+        return R.layout.activity_masterdetail;
     }
 }
