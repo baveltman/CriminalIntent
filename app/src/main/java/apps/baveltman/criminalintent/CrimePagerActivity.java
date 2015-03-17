@@ -13,7 +13,8 @@ import java.util.UUID;
 /**
  * A ViewPager activity for individual crimes in the ListFragment
  */
-public class CrimePagerActivity extends FragmentActivity {
+public class CrimePagerActivity extends FragmentActivity
+        implements CrimeFragment.Callbacks{
     private ViewPager mViewPager;
     private ArrayList<Crime> mCrimes;
 
@@ -85,5 +86,15 @@ public class CrimePagerActivity extends FragmentActivity {
                 return CrimeFragment.newInstance(crime.getId());
             }
         });
+    }
+
+    /**
+     * required callback for hosted CrimeFragment
+     * nothing to do here
+     * @param crime
+     */
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
     }
 }

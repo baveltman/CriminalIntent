@@ -60,6 +60,26 @@ public class CrimeFragment extends Fragment {
     private Button mSendReportButton;
     private Button mSuspectButton;
     private Button mCallSuspectButton;
+    private Callbacks mCallbacks;
+
+    /**
+     * Required interface for hosting activities.
+     */
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks)activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,6 +197,7 @@ public class CrimeFragment extends Fragment {
             Date date = (Date)i.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
             mDateButton.setText(mCrime.getDate().toString());
+            mCallbacks.onCrimeUpdated(mCrime);
         }
 
         //handle result from cameraFragment
@@ -187,6 +208,7 @@ public class CrimeFragment extends Fragment {
                 Photo p = new Photo(filename);
                 mCrime.setPhoto(p);
                 showPhoto();
+                mCallbacks.onCrimeUpdated(mCrime);
             }
         }
 
@@ -238,6 +260,7 @@ public class CrimeFragment extends Fragment {
             if(cursor !=null)
                 cursor.close();
 
+            mCallbacks.onCrimeUpdated(mCrime);
             return;
         }
     }
@@ -358,6 +381,7 @@ public class CrimeFragment extends Fragment {
 
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 mCrime.setTitle(c.toString());
+                mCallbacks.onCrimeUpdated(mCrime);
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
@@ -372,6 +396,7 @@ public class CrimeFragment extends Fragment {
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                mCallbacks.onCrimeUpdated(mCrime);
             }
         });
     }

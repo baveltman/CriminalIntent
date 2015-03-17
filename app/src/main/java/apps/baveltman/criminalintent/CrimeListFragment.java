@@ -303,4 +303,11 @@ public class CrimeListFragment extends ListFragment {
             return convertView;
         }
     }
+
+    /**
+     * updates list view
+     */
+    public void updateUI() {
+        ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+    }
 }
