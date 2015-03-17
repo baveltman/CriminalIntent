@@ -15,7 +15,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(getLayoutResId());
 
         //initialize and inflate activity_fragment UI
         FragmentManager fm = getSupportFragmentManager(); //using the support library for backwards compatibility pre API 11
@@ -26,5 +26,12 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
         }
+    }
+
+    /**
+     * @return the id of the layout to be inflated
+     */
+    protected int getLayoutResId() {
+        return R.layout.activity_twopane;
     }
 }
