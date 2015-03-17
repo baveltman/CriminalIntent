@@ -178,9 +178,8 @@ public class CrimeListFragment extends ListFragment {
     private void startNewCrimeActivity() {
         Crime crime = new Crime();
         CrimeLab.get(getActivity()).addCrime(crime);
-        Intent i = new Intent(getActivity(), CrimePagerActivity.class);
-        i.putExtra(CrimeFragment.EXTRA_CRIME_ID, crime.getId());
-        startActivityForResult(i, 0);
+        ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+        mCallbacks.onCrimeSelected(crime);
     }
 
     @Override
@@ -256,9 +255,7 @@ public class CrimeListFragment extends ListFragment {
         Crime c = ((CrimeAdapter)getListAdapter()).getItem(position);
 
         // Start CrimeActivity
-        Intent i = new Intent(getActivity(), CrimePagerActivity.class);
-        i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
-        startActivity(i);
+        mCallbacks.onCrimeSelected(c);
     }
 
     /**
